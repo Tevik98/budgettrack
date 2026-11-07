@@ -19,12 +19,11 @@
     <a href="{% url 'categories' %}" {% if request.resolver_match.url_name == 'categories' %}aria-current="page"{% endif %}>Categories</a>
   </nav>
   <div class="account"><span class="username">{{ user.username }}</span><form action="{% url 'logout' %}" method="post">{% csrf_token %}<button class="text-button" type="submit">Sign out</button></form></div>
-  {% else %}<span class="header-note">A little clarity for your everyday spending</span>{% endif %}
+  {% endif %}
 </div></header>
 <main id="main" class="main">
   {% if messages %}<div aria-live="polite">{% for message in messages %}<div class="notice">{{ message }}</div>{% endfor %}</div>{% endif %}
   {% block content %}{% endblock %}
 </main>
-<footer class="footer"><span>BudgetTrack / Group 6</span><span>Local demo · USD</span></footer>
 </body>
 </html>

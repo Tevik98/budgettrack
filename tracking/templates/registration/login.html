@@ -1,6 +1,5 @@
 {% extends 'tracking/base.html' %}
 {% block title %}Sign in{% endblock %}
 {% block content %}
-<div class="auth-layout"><section class="auth-intro"><p class="eyebrow">SMALL HABITS. CLEARER FINANCES.</p><h1>Know where<br>your money goes.</h1><p>Keep your everyday expenses in one place.<br>A simple way to make sense of your spending.</p><div class="intro-line"></div><p class="small">Made for the everyday, one expense at a time.</p></section>
-<section class="card auth-card"><p class="eyebrow">WELCOME BACK</p><h2>Sign in to BudgetTrack</h2><p class="muted">Your spending, all in one place.</p><form method="post">{% csrf_token %}{% include 'tracking/fields.html' %}{% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}<button class="button full" type="submit">Sign in <span aria-hidden="true">→</span></button></form><p class="auth-switch">New here? <a href="{% url 'signup' %}">Create an account</a></p></section></div>
+<section class="card form-card"><h1>Sign in</h1><form method="post">{% csrf_token %}{% include 'tracking/fields.html' %}{% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}<button class="button full" type="submit">Sign in</button></form><p class="auth-switch">New here? <a href="{% url 'signup' %}">Create an account</a></p></section>
 {% endblock %}

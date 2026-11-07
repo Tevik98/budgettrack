@@ -1,7 +1,7 @@
 {% extends 'tracking/base.html' %}
 {% block title %}Monthly budgets{% endblock %}
 {% block content %}
-<div class="page-heading"><div><p class="eyebrow">MAKE ROOM FOR WHAT MATTERS</p><h1>Monthly budgets</h1><p class="muted">Give your spending a plan, one month at a time.</p></div></div>
+<div class="page-heading"><div><h1>Monthly budgets</h1></div></div>
 <form method="get" class="budget-month">{% include 'tracking/fields.html' with form=month_form %}<button class="button secondary" type="submit">View month</button></form>
 {% if form %}
 <section class="stats" aria-label="Monthly budget summary">

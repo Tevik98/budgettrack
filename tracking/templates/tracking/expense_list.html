@@ -1,7 +1,7 @@
 {% extends 'tracking/base.html' %}
 {% block title %}Expenses{% endblock %}
 {% block content %}
-<div class="page-heading"><div><p class="eyebrow">YOUR EVERYDAY, ACCOUNTED FOR</p><h1>Expenses</h1><p class="muted">A clear view of what you spend, one entry at a time.</p></div><a class="button" href="{% url 'expense_add' %}"><span aria-hidden="true">+</span> Add expense</a></div>
+<div class="page-heading"><div><h1>Expenses</h1></div><a class="button" href="{% url 'expense_add' %}"><span aria-hidden="true">+</span> Add expense</a></div>
 <section class="stats" aria-label="Spending summary">
   <div class="stat featured"><p>Total spending</p><strong>${{ total|floatformat:2 }}</strong><span>{{ period }} · current filters</span></div>
   <div class="stat"><p>Expenses recorded</p><strong>{{ count }}</strong><span>In this view</span></div>

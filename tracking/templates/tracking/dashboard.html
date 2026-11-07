@@ -1,7 +1,7 @@
 {% extends 'tracking/base.html' %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
-<div class="page-heading"><div><p class="eyebrow">THE BIG PICTURE, MADE SIMPLE</p><h1>Your spending at a glance</h1><p class="muted">Small everyday expenses. A clearer view of the whole month.</p></div><a class="button" href="{% url 'expense_add' %}">+ Add expense</a></div>
+<div class="page-heading"><div><h1>Dashboard</h1></div><a class="button" href="{% url 'expense_add' %}">+ Add expense</a></div>
 <form method="get" class="budget-month">{% include 'tracking/fields.html' with form=month_form %}<button class="button secondary" type="submit">View month</button></form>
 {% if month %}
 <section class="stats dashboard-stats" aria-label="Monthly spending summary">
