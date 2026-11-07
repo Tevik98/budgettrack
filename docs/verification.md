@@ -11,7 +11,7 @@
 
 ## Automated compatibility checks
 
-The GitHub Actions workflow runs checks, migrations, and the full test suite on Windows and macOS with Python 3.12, 3.13, and 3.14. Results are only verified when the hosted workflow passes.
+The GitHub Actions workflow runs checks, migrations, and the full test suite on Windows and macOS with Python 3.12, 3.13, and 3.14. All six combinations passed for implementation commit `a89983a` on November 7, 2026: https://github.com/Tevik98/budgettrack/actions/runs/42415592784. Each job installed dependencies, checked Django and migration consistency, applied migrations, and ran all 27 tests.
 
 ## Remaining manual checks
 

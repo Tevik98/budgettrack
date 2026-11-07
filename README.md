@@ -89,4 +89,4 @@ Tests cover account creation and authentication, cross-user access, tampered for
 
 Public repository: https://github.com/Tevik98/budgettrack
 
-The GitHub Actions workflow checks Windows and macOS with Python 3.12–3.14 after each push and pull request. Local data, virtual environments, and environment files are excluded from Git.
+The GitHub Actions workflow checks Windows and macOS with Python 3.12–3.14 after each push and pull request. [All six compatibility jobs passed](https://github.com/Tevik98/budgettrack/actions/runs/42415592784) for the initial implementation. Local data, virtual environments, and environment files are excluded from Git.

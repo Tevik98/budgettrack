@@ -64,6 +64,6 @@ A feature works through the UI, enforces record ownership and validation, passes
 - [x] Live HTTP and browser login protection verified.
 - [ ] Authenticated desktop/mobile visual review and macOS checks.
 
-November 7 review: authenticated navigation and sample values checked for all main screens; dashboard phone-width screenshot and 390px/1280px overflow checks completed. Full desktop/Safari/physical-device review remains pending. Temporary review data was removed. Added a Windows/macOS Python 3.12–3.14 CI matrix; hosted results pending repository push. See verification.md.
+November 7 review: authenticated navigation and sample values checked for all main screens; dashboard phone-width screenshot and 390px/1280px overflow checks completed. Full desktop/Safari/physical-device review remains pending. Temporary review data was removed. All six Windows/macOS Python 3.12–3.14 CI jobs passed for commit a89983a, including migrations and all 27 tests. The public repository is pushed and the working tree is ready for team use. See verification.md.
 
 No database changes were needed for this increment. Next work: end-to-end review, compatibility checks, and GitHub repository setup.
