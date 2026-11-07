@@ -1,0 +1,21 @@
+{% extends 'tracking/base.html' %}
+{% block title %}Expenses{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">YOUR EVERYDAY, ACCOUNTED FOR</p><h1>Expenses</h1><p class="muted">A clear view of what you spend, one entry at a time.</p></div><a class="button" href="{% url 'expense_add' %}"><span aria-hidden="true">+</span> Add expense</a></div>
+<section class="stats" aria-label="Spending summary">
+  <div class="stat featured"><p>Total spending</p><strong>${{ total|floatformat:2 }}</strong><span>{{ period }} · current filters</span></div>
+  <div class="stat"><p>Expenses recorded</p><strong>{{ count }}</strong><span>In this view</span></div>
+  <div class="stat"><p>Your categories</p><strong>{{ category_count }}</strong><a href="{% url 'categories' %}">Manage categories <span aria-hidden="true">↗</span></a></div>
+</section>
+<section class="card ledger"><div class="section-heading"><h2>Expense history</h2><span class="muted">{{ period }}</span></div>
+<form method="get" class="filters">
+{% for field in filter_form %}<div class="field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<p class="error">{{ error }}</p>{% endfor %}</div>{% endfor %}
+<button class="button secondary" type="submit">Apply filters</button><a class="filter-reset" href="?month=">View all</a>
+</form>
+{% if page_obj %}<div class="table-scroll"><table><caption class="sr-only">Expenses matching the selected filters</caption><thead><tr><th scope="col">Expense</th><th scope="col">Category</th><th scope="col">Date</th><th scope="col" class="number">Amount</th><th scope="col"><span class="sr-only">Actions</span></th></tr></thead><tbody>
+{% for expense in page_obj %}<tr><td class="description">{{ expense.description|default:'Untitled expense' }}</td><td><span class="tag">{{ expense.category }}</span></td><td class="date">{{ expense.date|date:'M j, Y' }}</td><td class="number amount">${{ expense.amount|floatformat:2 }}</td><td><div class="row-actions"><a href="{% url 'expense_edit' expense.pk %}" aria-label="Edit {{ expense.description|default:'expense' }}">Edit</a><a class="danger-link" href="{% url 'expense_delete' expense.pk %}" aria-label="Delete {{ expense.description|default:'expense' }}">Delete</a></div></td></tr>{% endfor %}
+</tbody></table></div>
+{% if page_obj.has_other_pages %}<nav class="pagination" aria-label="Expense pages">{% if page_obj.has_previous %}<a href="?{{ query }}&amp;page={{ page_obj.previous_page_number }}">← Previous</a>{% endif %}<span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>{% if page_obj.has_next %}<a href="?{{ query }}&amp;page={{ page_obj.next_page_number }}">Next →</a>{% endif %}</nav>{% endif %}
+{% else %}<div class="empty"><span class="empty-icon" aria-hidden="true">＋</span><h3>No expenses to show</h3><p>Add your first expense, or adjust the filters to find earlier entries.</p><a class="button secondary" href="{% url 'expense_add' %}">Add an expense</a></div>{% endif %}
+</section>
+{% endblock %}

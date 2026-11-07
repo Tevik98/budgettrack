@@ -1,0 +1,3 @@
+{% extends 'tracking/base.html' %}
+{% block title %}Create account{% endblock %}
+{% block content %}<section class="card form-card"><p class="eyebrow">A FRESH START</p><h1>Create your account</h1><p class="muted">Start with eight everyday categories. Add your own anytime.</p><form method="post">{% csrf_token %}{% include 'tracking/fields.html' %}<button class="button full" type="submit">Create account</button></form><p class="auth-switch">Already have an account? <a href="{% url 'login' %}">Sign in</a></p></section>{% endblock %}

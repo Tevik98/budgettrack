@@ -1,0 +1,24 @@
+{% extends 'tracking/base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">THE BIG PICTURE, MADE SIMPLE</p><h1>Your spending at a glance</h1><p class="muted">Small everyday expenses. A clearer view of the whole month.</p></div><a class="button" href="{% url 'expense_add' %}">+ Add expense</a></div>
+<form method="get" class="budget-month">{% include 'tracking/fields.html' with form=month_form %}<button class="button secondary" type="submit">View month</button></form>
+{% if month %}
+<section class="stats dashboard-stats" aria-label="Monthly spending summary">
+<div class="stat featured"><p>{{ month|date:'F Y' }} spending</p><strong>${{ overall.spent|floatformat:2 }}</strong><span>{{ expense_count }} expense{{ expense_count|pluralize }} this month</span></div>
+<div class="stat"><p>Monthly budget</p><strong>{% if budget %}${{ overall.limit|floatformat:2 }}{% else %}Not set{% endif %}</strong><a href="{% url 'budgets' %}?month={{ month|date:'Y-m' }}">{% if budget %}Edit{% else %}Set{% endif %} monthly budget →</a></div>
+<div class="stat {% if overall.over %}over-budget{% endif %}"><p>Remaining budget</p><strong>{% if budget %}${{ overall.remaining|floatformat:2 }}{% else %}—{% endif %}</strong><span>{% if overall.over %}Over budget{% elif budget %}Your budget minus recorded spending{% else %}Set a budget to see what's left{% endif %}</span></div>
+</section>
+<div class="dashboard-charts">
+<section class="card chart-panel"><h2>Where your money goes</h2><p class="muted chart-subtitle">Spending by category · {{ month|date:'F Y' }}</p>
+{% for row in category_rows %}<div class="chart-row"><div class="chart-label"><span>{{ row.category.name }}</span><strong>${{ row.spent|floatformat:2 }}</strong></div><div class="chart-track" aria-hidden="true"><div class="chart-fill" style="width:{{ row.bar_percent }}%"></div></div><p class="chart-note">{{ row.share|floatformat:1 }}% of spending{% if row.over %}<span class="error"> · Over category limit</span>{% endif %}</p></div>{% empty %}<div class="chart-empty"><h3>A fresh month</h3><p>No expenses recorded for {{ month|date:'F Y' }}. Add an expense to see the breakdown.</p></div>{% endfor %}
+</section>
+<section class="card chart-panel"><h2>Monthly spending</h2><p class="muted chart-subtitle">Up to six months ending {{ month|date:'F Y' }} · recorded expenses</p>
+{% for row in trend %}<div class="chart-row trend-row {% if row.selected %}selected-month{% endif %}"><div class="chart-label"><a href="?month={{ row.month|date:'Y-m' }}" {% if row.selected %}aria-current="date"{% endif %}>{{ row.month|date:'M Y' }}</a><strong>${{ row.amount|floatformat:2 }}</strong></div><div class="chart-track" aria-hidden="true"><div class="chart-fill" style="width:{{ row.bar_percent }}%"></div></div></div>{% endfor %}
+<p class="help">Select a month to explore its expenses. Months with no entries show $0.00.</p></section>
+</div>
+<section class="card ledger"><div class="section-heading"><h2>Recent expenses</h2><a href="{% url 'expense_list' %}?month={{ month|date:'Y-m' }}">View all →</a></div>
+{% if recent_expenses %}<div class="table-scroll"><table><caption class="sr-only">Five most recent expenses in {{ month|date:'F Y' }}</caption><thead><tr><th scope="col">Expense</th><th scope="col">Category</th><th scope="col">Date</th><th scope="col" class="number">Amount</th></tr></thead><tbody>{% for expense in recent_expenses %}<tr><td class="description"><a href="{% url 'expense_edit' expense.pk %}">{{ expense.description|default:'Untitled expense' }}</a></td><td><span class="tag">{{ expense.category.name }}</span></td><td class="date">{{ expense.date|date:'M j, Y' }}</td><td class="number amount">${{ expense.amount|floatformat:2 }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty"><h3>Nothing recorded yet</h3><p>Your latest expenses for this month will appear here.</p><a class="button secondary" href="{% url 'expense_add' %}">Add an expense</a></div>{% endif %}
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'tracking/base.html' %}
+{% block title %}Monthly budgets{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">MAKE ROOM FOR WHAT MATTERS</p><h1>Monthly budgets</h1><p class="muted">Give your spending a plan, one month at a time.</p></div></div>
+<form method="get" class="budget-month">{% include 'tracking/fields.html' with form=month_form %}<button class="button secondary" type="submit">View month</button></form>
+{% if form %}
+<section class="stats" aria-label="Monthly budget summary">
+<div class="stat featured"><p>{{ month|date:'F Y' }} budget</p><strong>{% if budget %}${{ overall.limit|floatformat:2 }}{% else %}Not set{% endif %}</strong><span>{% if budget %}Saved monthly limit{% else %}Save your plan below{% endif %}</span></div>
+<div class="stat"><p>Spent this month</p><strong>${{ overall.spent|floatformat:2 }}</strong><a href="{% url 'expense_list' %}?month={{ month|date:'Y-m' }}">View this month's expenses →</a></div>
+<div class="stat {% if overall.over %}over-budget{% endif %}"><p>Remaining budget</p><strong>{% if budget %}${{ overall.remaining|floatformat:2 }}{% else %}—{% endif %}</strong><span>{% if overall.over %}Over budget · expense entry stays available{% elif budget %}Monthly budget minus spending{% else %}Set a budget to see what's left{% endif %}</span></div>
+</section>
+<div class="budget-layout">
+<section class="card budget-plan"><h2>Your plan for {{ month|date:'F Y' }}</h2>
+{% if copy_source %}<div class="notice">Limits from {{ copy_source.month|date:'F Y' }} are filled in below. Save to use them for this month. Unspent money does not roll over.</div>{% endif %}
+<p class="muted">Category limits are optional. Leave a field blank for no limit; enter 0 to plan no spending. Category limits are independent of the overall budget.</p>
+<form method="post" action="?month={{ month|date:'Y-m' }}">{% csrf_token %}{% include 'tracking/fields.html' %}<button class="button" type="submit">Save monthly budget</button><p class="help">Changes apply only to {{ month|date:'F Y' }}.</p></form></section>
+<section class="card budget-breakdown"><h2>Spending by category</h2><p class="muted">Compared with this month's saved limits.</p>
+{% for row in category_rows %}<div class="budget-category"><div class="budget-category-heading"><strong>{{ row.category.name }}</strong><span>${{ row.spent|floatformat:2 }}{% if row.limit != None %} / ${{ row.limit|floatformat:2 }}{% endif %}</span></div>
+{% if row.limit != None %}<progress max="100" value="{{ row.percent }}" aria-label="{{ row.category.name }} budget used" class="{% if row.over %}over-progress{% endif %}"></progress><p class="budget-status {% if row.over %}error{% endif %}">{% if row.over %}Over budget · {% endif %}${{ row.remaining|floatformat:2 }} remaining</p>{% else %}<p class="budget-status muted">No category limit set</p>{% endif %}</div>{% empty %}<p class="muted">Create a category to set individual spending limits.</p>{% endfor %}
+</section></div>
+{% endif %}
+{% endblock %}

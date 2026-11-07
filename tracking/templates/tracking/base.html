@@ -1,0 +1,30 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}BudgetTrack{% endblock %} · BudgetTrack</title>
+  <link rel="stylesheet" href="{% static 'tracking/app.css' %}">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="header"><div class="header-inner">
+  <a class="brand" href="{% url 'dashboard' %}"><span class="brand-icon" aria-hidden="true">B</span> BudgetTrack<span class="brand-dot">.</span></a>
+  {% if user.is_authenticated %}
+  <nav aria-label="Main navigation">
+    <a href="{% url 'dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %}>Dashboard</a>
+    <a href="{% url 'expense_list' %}" {% if request.resolver_match.url_name == 'expense_list' or request.resolver_match.url_name == 'expense_add' or request.resolver_match.url_name == 'expense_edit' or request.resolver_match.url_name == 'expense_delete' %}aria-current="page"{% endif %}>Expenses</a>
+    <a href="{% url 'budgets' %}" {% if request.resolver_match.url_name == 'budgets' %}aria-current="page"{% endif %}>Budgets</a>
+    <a href="{% url 'categories' %}" {% if request.resolver_match.url_name == 'categories' %}aria-current="page"{% endif %}>Categories</a>
+  </nav>
+  <div class="account"><span class="username">{{ user.username }}</span><form action="{% url 'logout' %}" method="post">{% csrf_token %}<button class="text-button" type="submit">Sign out</button></form></div>
+  {% else %}<span class="header-note">A little clarity for your everyday spending</span>{% endif %}
+</div></header>
+<main id="main" class="main">
+  {% if messages %}<div aria-live="polite">{% for message in messages %}<div class="notice">{{ message }}</div>{% endfor %}</div>{% endif %}
+  {% block content %}{% endblock %}
+</main>
+<footer class="footer"><span>BudgetTrack / Group 6</span><span>Local demo · USD</span></footer>
+</body>
+</html>
