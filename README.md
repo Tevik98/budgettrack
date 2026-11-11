@@ -1,29 +1,30 @@
 # BudgetTrack
 
-A local personal expense tracking demo for Group 6.
+[![Django checks](https://github.com/Tevik98/budgettrack/actions/workflows/tests.yml/badge.svg)](https://github.com/Tevik98/budgettrack/actions/workflows/tests.yml)
 
-## Project status
+BudgetTrack is a small personal expense tracker built with Django. It runs locally and keeps its data in a SQLite database on your computer.
 
-Implemented: sign-up/login/logout, private expense records, premade and custom categories, month/category filters, exact spending totals, pagination, editing, confirmed deletion, monthly budgets, optional category limits, and the dashboard with category and monthly spending charts.
+## Features
 
-All 27 automated tests passed on Windows. Authenticated screens were reviewed in the in-app browser, including dashboard phone-width layout and overflow checks at 390px/1280px. Full desktop, Safari, and physical-device review remain pending. See [verification details](docs/verification.md).
+- Private accounts with sign-up, login, and logout
+- Expense tracking with month and category filters
+- Built-in categories and support for custom ones
+- Monthly budgets with optional limits for each category
+- A dashboard showing spending totals, category breakdowns, and recent activity
+- A responsive interface that works on desktop and mobile screens
 
-## Confirmed requirements
+## Getting started
 
-- Python and Django, running locally on Windows and macOS.
-- SQLite database; Django templates, CSS, and minimal JavaScript.
-- Clean, lightweight, responsive interface with a light theme and green accents.
-- User registration, login, logout, and private user-owned records.
-- Expense-only tracking: add, view, edit, and delete expenses.
-- Premade categories plus user-created categories.
-- Monthly budgets, optional category limits, and spending summaries/charts.
-- Public GitHub repository named `budgettrack`.
+BudgetTrack supports Python 3.12, 3.13, and 3.14. Use a separate virtual environment on each computer rather than copying one between Windows and macOS.
 
-See [requirements](docs/requirements.md) for behavior and acceptance criteria.
+### macOS
 
-## Development environment
-
-Use Python 3.12, 3.13, or 3.14 on either platform. Create a separate virtual environment on each computer; do not copy or commit it. Dependencies target Django 5.2 LTS.
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python manage.py migrate
+.venv/bin/python manage.py runserver
+```
 
 ### Windows (PowerShell)
 
@@ -34,59 +35,49 @@ py -m venv .venv
 .\.venv\Scripts\python.exe manage.py runserver
 ```
 
-### macOS (Terminal)
+Once the server starts, open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) and create an account. New accounts start with eight common expense categories, and you can add your own from the Categories page.
+
+## Budgets and dashboard
+
+The Budgets page lets you set one overall budget for a month and optional limits for individual categories. Leaving a category blank means it has no limit; entering zero means no spending is planned for it. If a month does not have a budget yet, the previous month's amounts are shown as a starting point until you save.
+
+The Dashboard brings together the selected month's spending, budget balance, category breakdown, six-month history, and latest expenses. The charts are plain HTML and CSS, so they do not need an internet connection or an external chart service.
+
+## Demo data
+
+To create a sample account, run:
 
 ```sh
-python3 -m venv .venv
-.venv/bin/python -m pip install -r requirements.txt
-.venv/bin/python manage.py migrate
-.venv/bin/python manage.py runserver
+.venv/bin/python manage.py seed_demo
 ```
 
-Open http://127.0.0.1:8000/ and select **Create an account**. Each new account receives eight premade categories. Add expenses and custom categories, then use the month/category filters to review spending. An empty month filter shows all months. Settings are for local development only.
+On Windows, use `.\.venv\Scripts\python.exe` instead. The command asks you to choose a password and creates a `demo` account with fictional expenses. Use `--username another_name` if that username is already taken. It will not overwrite an existing account.
 
-SQLite data stays local to each computer and is excluded from Git. Use fictional sample expenses for demonstrations.
-
-## Dashboard
-
-Select **Dashboard** in the navigation or open http://127.0.0.1:8000/dashboard/. Choose a month to see total spending, the saved monthly budget, remaining balance, category spending shares, up to six months of spending history, and the five latest expenses in that month. Click a chart month to explore it or a recent expense to edit it. The dashboard uses the same calculations as Budgets, including negative remaining balances when over budget.
-
-Charts are local HTML/CSS with visible numeric values; no chart service, JavaScript library, or internet connection is needed after installation. Months without records show zero spending, and months without saved budgets explicitly show **Not set**. Unsaved budget prefills are not treated as saved limits.
-
-## Monthly budgets
-
-Open **Budgets**, select a month, and enter the overall USD budget and any category limits. Blank category limits mean no limit; zero means no spending is planned. Category limits are independent of the overall budget, so their sum is not required to match it.
-
-For an unsaved month, the previous calendar month's saved limits prefill the form. Select **Save monthly budget** to apply them. Visiting a month never creates records. Once saved, each month's budget is independent; unused money does not roll over. Remaining balances use all expenses dated in that month and update when expenses change. Overspending displays a warning but never blocks expense entry.
-
-## Optional sample account
-
-Run `manage.py seed_demo` using your platform's virtual-environment Python. It prompts for a password and creates a `demo` account with eight fictional expenses. Use `--username another_name` if `demo` already exists. Existing accounts and data are never overwritten. Sample dates span the last eight days; select **View all** to see them all if they cross a month boundary.
-
-## Verification
-
-Windows:
-
-```powershell
-.\.venv\Scripts\python.exe manage.py test
-.\.venv\Scripts\python.exe manage.py check
-```
+## Running the tests
 
 macOS:
 
 ```sh
-.venv/bin/python manage.py test
 .venv/bin/python manage.py check
+.venv/bin/python manage.py test
 ```
 
-Tests cover account creation and authentication, cross-user access, tampered form inputs, exact monetary calculations, month/category filtering, pagination, invalid input, CSRF, HTML escaping, and safe demo seeding. Run the same checks on your Mac after installation.
+Windows:
 
-## Design and progress
+```powershell
+.\.venv\Scripts\python.exe manage.py check
+.\.venv\Scripts\python.exe manage.py test
+```
+
+The GitHub Actions workflow runs the same checks on Windows and macOS with every supported Python version.
+
+## Project notes
+
+This project is set up for local development, not production hosting. The SQLite database, virtual environment, and local environment files are ignored by Git, so each installation keeps its own data.
+
+More project documentation:
 
 - [Requirements](docs/requirements.md)
+- [Design notes](docs/design.md)
+- [Verification notes](docs/verification.md)
 - [Scrum board](docs/scrum-board.md)
-- [First increment design](docs/design.md)
-
-Public repository: https://github.com/Tevik98/budgettrack
-
-The GitHub Actions workflow checks Windows and macOS with Python 3.12–3.14 after each push and pull request. [All six compatibility jobs passed](https://github.com/Tevik98/budgettrack/actions/runs/42415592784) for the initial implementation. Local data, virtual environments, and environment files are excluded from Git.
