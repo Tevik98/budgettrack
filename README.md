@@ -15,7 +15,7 @@ BudgetTrack is a small personal expense tracker built with Django. It runs local
 
 ## Getting started
 
-BudgetTrack supports Python 3.12, 3.13, and 3.14. Use a separate virtual environment on each computer rather than copying one between Windows and macOS.
+BudgetTrack supports Python 3.12, 3.13, and 3.14. Follow the setup steps for your operating system below.
 
 ### macOS
 
