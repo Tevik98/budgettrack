@@ -70,6 +70,8 @@ class DashboardTests(TestCase):
         response = self.client.get('/dashboard/?month=2026-11')
         self.assertTrue(response.context['overall']['over'])
         self.assertEqual(response.context['overall']['remaining'], Decimal('-0.01'))
+        self.assertEqual(response.context['overall']['overage'], Decimal('0.01'))
+        self.assertNotContains(response, '$-')
 
     def test_recent_expenses_are_latest_five_in_selected_month(self):
         for day in range(1,8):
