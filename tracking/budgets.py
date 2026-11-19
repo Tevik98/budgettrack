@@ -12,11 +12,13 @@ def previous_budget(user, month):
 
 
 def spending_status(spent, limit):
+    over = limit is not None and spent > limit
     return {
         'spent': Decimal(spent) / 100,
         'limit': Decimal(limit) / 100 if limit is not None else None,
         'remaining': Decimal(limit - spent) / 100 if limit is not None else None,
-        'over': limit is not None and spent > limit,
+        'over': over,
+        'overage': Decimal(spent - limit) / 100 if over else None,
         'percent': min(100, spent * 100 // limit) if limit else (100 if spent else 0),
     }
 

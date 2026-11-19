@@ -26,6 +26,7 @@ class ExpenseForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.instance.owner = user
         self.fields['category'].queryset = Category.objects.filter(owner=user)
+        self.fields['category'].empty_label = 'Choose a category'
         if self.instance.pk:
             self.fields['amount'].initial = self.instance.amount
         else:

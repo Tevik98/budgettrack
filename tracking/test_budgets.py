@@ -49,6 +49,9 @@ class BudgetTests(TestCase):
         self.assertEqual(response.context['overall']['remaining'], Decimal('-0.10'))
         self.assertEqual(response.context['category_rows'][0]['remaining'], Decimal('-0.20'))
         self.assertContains(response, 'Over budget')
+        self.assertEqual(response.context['overall']['overage'], Decimal('0.10'))
+        self.assertContains(response, '$0.20 over budget')
+        self.assertNotContains(response, '$-')
         expense = Expense.objects.get(owner=self.user, amount_cents=40)
         self.client.post(f'/expenses/{expense.pk}/edit/', {'amount':'0.10', 'date':'2026-11-01',
             'category': self.category.pk, 'description':'Updated'})
